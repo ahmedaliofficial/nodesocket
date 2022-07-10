@@ -14,7 +14,7 @@ const io = require('socket.io')(server, {
 io.on('connection', (socket) => {
     console.log('connection');
 
-    socket.on('sendChatToServer', (message) => {
+    socket.on('ChatToServer', (message) => {
         console.log(message);
 
         // io.sockets.emit('sendChatToClient', message);
@@ -27,6 +27,6 @@ io.on('connection', (socket) => {
     });
 });
 
-server.listen(port, () => {
+server.listen(9000, () => {
     console.log('Server is running');
 });
