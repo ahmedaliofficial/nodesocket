@@ -1,11 +1,37 @@
-import express from "express";
+const express = require('express')
 
 const app = express();
-const port = 3000;
-app.use("/", (req, res) => {
-  res.json({ message: "Hello From Express App" });
+
+
+const server = require('http').createServer(app);
+const PORT =  3000;
+
+const io = require('socket.io')(server, {
+    cors: { origin: "*" }
 });
 
-app.listen(3000, () => {
-  console.log(`Starting Server on Port ${port}`);
+
+io.on('connection', (socket) => {
+    console.log('connection');
+
+    socket.on('ChatToServer', (message) => {
+        console.log(message);
+
+        // io.sockets.emit('sendChatToClient', message);
+        socket.broadcast.emit('sendChatToClient', message);
+    });
+
+
+    socket.on('disconnect', (socket) => {
+        console.log('Disconnect');
+    });
 });
+app.get('/', (req, res) => {
+    res.send('Hello World!')
+})
+
+app.listen(PORT, () => {
+    console.log('Server is running');
+});
+
+
