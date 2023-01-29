@@ -7,7 +7,7 @@ const server = require('http').createServer(app);
 const PORT = process.env.PORT || 8000;
 
 const io = require('socket.io')(server, {
-    cors: { origin: "*"}
+    cors: { origin: "*" }
 });
 
 
@@ -26,7 +26,11 @@ io.on('connection', (socket) => {
         console.log('Disconnect');
     });
 });
-
+app.get('/', (req, res) => {
+    res.send('Hello World!')
+})
 server.listen(PORT, () => {
     console.log('Server is running');
 });
+
+
