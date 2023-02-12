@@ -7,18 +7,24 @@ const server = require('http').createServer(app);
 const PORT =  5000;
 
 const io = require('socket.io')(server, {
-    cors: "*    "
+    cors: "*"
 });
 
+var users = [];
 
 io.on('connection', (socket) => {
-    console.log('connection');
-
-    socket.on('ChatToServer', (message) => {
-        console.log(message);
-
+    // console.log(socket.handshake.query['user']);
+    console.log('connect')
+    
+    socket.on('chattotserver', (message) => {
+        // message = JSON.parse(message)
         // io.sockets.emit('sendChatToClient', message);
-        socket.broadcast.emit('sendChatToClient', message);
+        socket.to(users[parseInt(message.to)]).emit('getclientchat', message);
+    });
+    socket.on('connecttoserver', (data) => {
+        // io.sockets.emit('sendChatToClient', message);
+        users[parseInt(data.userid)] = socket.id
+        console.log(users[parseInt(data.userid)],"connected",data,users)
     });
 
 
